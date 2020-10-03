@@ -104,22 +104,17 @@ public class RenderSystem extends EntitySystem {
                 // Para cada campo de texto...
                 for (Entity textFieldEntity : textFields) {
 
-                    Values.log("Entidade de textField: " + textFieldEntity);
+                    //Values.log("Entidade de textField: " + textFieldEntity);
 
-                    DimensionComponent textFieldDimComponent = Map.dimension.get(textFieldEntity);
                     PositionComponent textFieldPosComponent = Map.position.get(textFieldEntity);
                     TextFieldComponent textFieldComponent = Map.textField.get(textFieldEntity);
 
                     textFieldComponent.textField.setPosition(textFieldPosComponent.x, textFieldPosComponent.y);
-                    textFieldComponent.textField.setSize(textFieldDimComponent.width, textFieldDimComponent.height);
-
                     textFieldComponent.textField.draw(spriteBatchComponent.batch, Values.PARENT_ALPHA);
 
                 }
 
                 spriteBatchComponent.batch.end();
-
-
 
             }
 

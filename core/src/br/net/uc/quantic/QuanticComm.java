@@ -4,13 +4,12 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import br.net.uc.quantic.entity.EarthEntity;
 import br.net.uc.quantic.entity.MarsEntity;
-import br.net.uc.quantic.entity.TypingEntity;
 import br.net.uc.quantic.entity.WorldEntity;
+import br.net.uc.quantic.system.InputProcessingSystem;
+import br.net.uc.quantic.system.LabelProcessingSystem;
 import br.net.uc.quantic.system.RenderSystem;
 
 public class QuanticComm extends ApplicationAdapter {
@@ -22,9 +21,11 @@ public class QuanticComm extends ApplicationAdapter {
 
 	WorldEntity world;
 
-	TypingEntity typing;
-
 	RenderSystem renderSystem;
+
+	InputProcessingSystem inputProcessingSystem;
+
+	LabelProcessingSystem labelProcessingSystem;
 	
 	@Override
 	public void create () {
@@ -40,13 +41,17 @@ public class QuanticComm extends ApplicationAdapter {
 		world = new WorldEntity();
 		engine.addEntity(world);
 
-		typing = new TypingEntity();
-		engine.addEntity(typing);
-
 		renderSystem = new RenderSystem();
 		engine.addSystem(renderSystem);
 		renderSystem.setProcessing(true);
 
+		inputProcessingSystem = new InputProcessingSystem();
+		engine.addSystem(inputProcessingSystem);
+		inputProcessingSystem.setProcessing(true);
+
+		labelProcessingSystem = new LabelProcessingSystem();
+		engine.addSystem(labelProcessingSystem);
+		labelProcessingSystem.setProcessing(true);
 
 	}
 

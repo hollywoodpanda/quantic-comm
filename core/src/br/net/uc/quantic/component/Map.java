@@ -13,5 +13,6 @@ public class Map {
     public static final ComponentMapper<TextFieldComponent> textField = ComponentMapper.getFor(TextFieldComponent.class);
     public static final ComponentMapper<StageComponent> stage = ComponentMapper.getFor(StageComponent.class);
     public static final ComponentMapper<TextComponent> text = ComponentMapper.getFor(TextComponent.class);
+    public static final ComponentMapper<LabelFieldComponent> label = ComponentMapper.getFor(LabelFieldComponent.class);
 
 }

@@ -6,14 +6,9 @@ import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 
-import java.awt.TextField;
-
 import br.net.uc.quantic.component.Map;
-import br.net.uc.quantic.component.PositionComponent;
-import br.net.uc.quantic.component.StageComponent;
 import br.net.uc.quantic.component.TextComponent;
 import br.net.uc.quantic.component.TextFieldComponent;
-import br.net.uc.quantic.entity.TypingEntity;
 
 public class InputProcessingSystem extends EntitySystem {
 
@@ -22,7 +17,7 @@ public class InputProcessingSystem extends EntitySystem {
     @Override
     public void addedToEngine(Engine engine) {
 
-        this.typingEntities = engine.getEntitiesFor(Family.all(StageComponent.class, TextComponent.class, TextFieldComponent.class).get());
+        this.typingEntities = engine.getEntitiesFor(Family.all(TextFieldComponent.class, TextComponent.class).get());
 
     }
 
@@ -31,10 +26,10 @@ public class InputProcessingSystem extends EntitySystem {
 
         for (Entity typingEntity : this.typingEntities) {
 
-            StageComponent stageComponent = Map.stage.get(typingEntity);
+            TextFieldComponent textFieldComponent = Map.textField.get(typingEntity);
+            TextComponent textComponent = Map.text.get(typingEntity);
 
-            stageComponent.stage.draw();
-            stageComponent.stage.act();
+            textComponent.text = textFieldComponent.textField.getText();
 
         }
 
