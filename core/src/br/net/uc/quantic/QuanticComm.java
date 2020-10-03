@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import br.net.uc.quantic.entity.EarthEntity;
 import br.net.uc.quantic.entity.MarsEntity;
+import br.net.uc.quantic.entity.TypingEntity;
 import br.net.uc.quantic.entity.WorldEntity;
 import br.net.uc.quantic.system.RenderSystem;
 
@@ -20,6 +21,8 @@ public class QuanticComm extends ApplicationAdapter {
 	MarsEntity mars;
 
 	WorldEntity world;
+
+	TypingEntity typing;
 
 	RenderSystem renderSystem;
 	
@@ -36,6 +39,9 @@ public class QuanticComm extends ApplicationAdapter {
 
 		world = new WorldEntity();
 		engine.addEntity(world);
+
+		typing = new TypingEntity();
+		engine.addEntity(typing);
 
 		renderSystem = new RenderSystem();
 		engine.addSystem(renderSystem);

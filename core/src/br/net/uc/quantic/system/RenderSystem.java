@@ -12,13 +12,15 @@ import br.net.uc.quantic.component.Map;
 import br.net.uc.quantic.component.PositionComponent;
 import br.net.uc.quantic.component.SpriteBatchComponent;
 import br.net.uc.quantic.component.SpriteComponent;
-import br.net.uc.quantic.component.VelocityComponent;
+import br.net.uc.quantic.component.TextFieldComponent;
+import br.net.uc.quantic.utils.Values;
 
 public class RenderSystem extends EntitySystem {
 
     private ImmutableArray<Entity> sprites;
     private ImmutableArray<Entity> worlds;
     private ImmutableArray<Entity> cameras;
+    private ImmutableArray<Entity> textFields;
 
     public RenderSystem() {}
 
@@ -33,6 +35,9 @@ public class RenderSystem extends EntitySystem {
 
         // Só temos a terra com camera, mas recupera tudo que tem componente camera aqui
         this.cameras = engine.getEntitiesFor(Family.all(CameraComponent.class).get());
+
+        // Os campos de texto (só tem o de enviar para marte)
+        this.textFields = engine.getEntitiesFor(Family.all(TextFieldComponent.class, PositionComponent.class, DimensionComponent.class).get());
 
     }
 
@@ -73,6 +78,8 @@ public class RenderSystem extends EntitySystem {
                 // Iniciamos o desenho!
                 spriteBatchComponent.batch.begin();
 
+                spriteBatchComponent.batch.enableBlending();
+
                 // Projeção da câmera no batch (???)
                 spriteBatchComponent.batch.setProjectionMatrix(cameraComponent.camera.combined);
 
@@ -94,7 +101,25 @@ public class RenderSystem extends EntitySystem {
 
                 }
 
+                // Para cada campo de texto...
+                for (Entity textFieldEntity : textFields) {
+
+                    Values.log("Entidade de textField: " + textFieldEntity);
+
+                    DimensionComponent textFieldDimComponent = Map.dimension.get(textFieldEntity);
+                    PositionComponent textFieldPosComponent = Map.position.get(textFieldEntity);
+                    TextFieldComponent textFieldComponent = Map.textField.get(textFieldEntity);
+
+                    textFieldComponent.textField.setPosition(textFieldPosComponent.x, textFieldPosComponent.y);
+                    textFieldComponent.textField.setSize(textFieldDimComponent.width, textFieldDimComponent.height);
+
+                    textFieldComponent.textField.draw(spriteBatchComponent.batch, Values.PARENT_ALPHA);
+
+                }
+
                 spriteBatchComponent.batch.end();
+
+
 
             }
 

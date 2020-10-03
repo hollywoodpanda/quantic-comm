@@ -6,4 +6,14 @@ public class Values {
 
     public static final float CAMERA_VIEWPORT_HEIGHT = 600;
 
+    public static final String SKIN_PATH = "uiskin.json";
+
+    public static final float PARENT_ALPHA = 1;
+
+    public static final void log (String text) {
+
+        System.out.println(text);
+
+    }
+
 }
