@@ -7,6 +7,7 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 
 import br.net.uc.quantic.component.Map;
+import br.net.uc.quantic.component.OnOffComponent;
 import br.net.uc.quantic.component.RotationComponent;
 import br.net.uc.quantic.component.SpriteComponent;
 
@@ -17,7 +18,7 @@ public class RotationSystem extends EntitySystem {
     @Override
     public void addedToEngine(Engine engine) {
 
-        this.rotationable = engine.getEntitiesFor(Family.all(RotationComponent.class, SpriteComponent.class).get());
+        this.rotationable = engine.getEntitiesFor(Family.all(RotationComponent.class, SpriteComponent.class).exclude(OnOffComponent.class).get());
 
     }
 
@@ -30,7 +31,8 @@ public class RotationSystem extends EntitySystem {
             SpriteComponent spriteComponent = Map.sprite.get(rotationEntity);
 
             spriteComponent.value.setOrigin(rotationComponent.x, rotationComponent.y);
-            spriteComponent.value.rotate(rotationComponent.degrees);
+            // TODO: TIRAR O * 10!!!
+            spriteComponent.value.rotate(rotationComponent.degrees * 10);
 
         }
 

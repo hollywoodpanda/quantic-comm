@@ -20,7 +20,7 @@ public class MessageEntity extends Entity {
         add(new PositionComponent());
         add(new DimensionComponent(20, 20));
         add(new DirectionComponent());
-        add(new VelocityComponent());
+        add(new VelocityComponent(0.001f, 0.001f));
         add(new SpriteComponent(raySprite));
         // TODO: Ideia é só disparar outra msg
         // TODO: ... se a msg num tá mais true

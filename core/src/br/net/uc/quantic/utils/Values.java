@@ -18,4 +18,16 @@ public class Values {
 
     }
 
+    public static final void logArray (float[] values) {
+
+        System.out.print("[ ");
+
+        for (float val : values) {
+            System.out.print(val + ", ");
+        }
+
+        System.out.print(" ]\r\n");
+
+    }
+
 }

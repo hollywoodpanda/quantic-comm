@@ -40,7 +40,7 @@ public class EarthEntity extends Entity {
         // Terra deve ser bem maior que marte!
         add(new DimensionComponent(width, height));
         add(new CameraComponent(camera));
-        add(new RotationComponent((width) / 2, (height) / 2, 0.1f));
+        add(new RotationComponent(width / 2, height / 2, 0.2f));
 
     }
 

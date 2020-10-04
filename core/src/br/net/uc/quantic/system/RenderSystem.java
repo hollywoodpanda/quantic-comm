@@ -121,6 +121,10 @@ public class RenderSystem extends EntitySystem {
 
                     messageSprite.value.draw(spriteBatchComponent.batch);
 
+                    Values.log("");
+
+                    //Values.logArray(messageSprite.value.getVertices());
+
                 }
 
                 for (Entity button : buttons) {

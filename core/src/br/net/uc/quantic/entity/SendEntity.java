@@ -12,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import br.net.uc.quantic.component.ButtonComponent;
 import br.net.uc.quantic.component.DimensionComponent;
-import br.net.uc.quantic.component.OnOffComponent;
 import br.net.uc.quantic.component.PositionComponent;
 import br.net.uc.quantic.utils.Values;
 

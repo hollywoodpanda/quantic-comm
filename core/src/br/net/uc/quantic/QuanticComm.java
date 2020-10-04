@@ -12,6 +12,7 @@ import br.net.uc.quantic.entity.MessageEntity;
 import br.net.uc.quantic.entity.SendEntity;
 import br.net.uc.quantic.entity.SpaceBackgroundEntity;
 import br.net.uc.quantic.entity.WorldEntity;
+import br.net.uc.quantic.system.MovementSystem;
 import br.net.uc.quantic.system.RayMessageSystem;
 import br.net.uc.quantic.system.RenderSystem;
 import br.net.uc.quantic.system.RotationSystem;
@@ -38,6 +39,8 @@ public class QuanticComm extends ApplicationAdapter {
 	RotationSystem rotationSystem;
 
 	RayMessageSystem rayMessageSystem;
+
+	MovementSystem movementSystem;
 	
 	@Override
 	public void create () {
@@ -75,6 +78,10 @@ public class QuanticComm extends ApplicationAdapter {
 		rayMessageSystem = new RayMessageSystem(sendMessageSignal);
 		engine.addSystem(rayMessageSystem);
 		rayMessageSystem.setProcessing(true);
+
+		movementSystem = new MovementSystem();
+		engine.addSystem(movementSystem);
+		movementSystem.setProcessing(true);
 
 	}
 
