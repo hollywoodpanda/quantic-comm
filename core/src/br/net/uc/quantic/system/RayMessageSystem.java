@@ -75,13 +75,18 @@ public class RayMessageSystem extends EntitySystem implements Listener<Boolean> 
 
         PositionComponent messagePosition = Map.position.get(message);
 
+        // Pego o x do vértice no topo esquerdo do retângulo da Terra
         float x2 = earthSprite.value.getVertices()[SpriteBatch.X2];
+        // Pego o y do vértice no topo esquerdo do retângulo da Terra
         float y2 = earthSprite.value.getVertices()[SpriteBatch.Y2];
-
+        // Pego o x do vértice no topo direito do retângulo da Terra
         float x3 = earthSprite.value.getVertices()[SpriteBatch.X3];
+        // Pego o y do vértice no topo direito do retângulo da Terra
         float y3 = earthSprite.value.getVertices()[SpriteBatch.Y3];
 
+        // Calculo a média entre os dois vértices X e posiciono a mensagem inicialmente
         messagePosition.x = (x3 + x2) / 2;
+        // Calculo a média entre os dois vértices Y e posiciono a mensagem inicialmente
         messagePosition.y = (y3 + y2) / 2;
 
     }
