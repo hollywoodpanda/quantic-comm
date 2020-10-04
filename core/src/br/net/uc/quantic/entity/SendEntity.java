@@ -17,11 +17,9 @@ import br.net.uc.quantic.utils.Values;
 
 public class SendEntity extends Entity {
 
-    public SendEntity (final Signal<Boolean> signal) {
+    public SendEntity (final Stage stage, final Signal<Boolean> signal) {
 
         Skin skin = new Skin(Gdx.files.internal(Values.SKIN_PATH));
-
-        Stage stage = new Stage();
 
         TextButton button = new TextButton(Values.BUTTON_TITLE, skin);
 

@@ -9,11 +9,15 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import br.net.uc.quantic.component.ButtonComponent;
 import br.net.uc.quantic.component.CameraComponent;
 import br.net.uc.quantic.component.DimensionComponent;
+import br.net.uc.quantic.component.GameStateComponent;
+import br.net.uc.quantic.component.LabelComponent;
 import br.net.uc.quantic.component.Map;
+import br.net.uc.quantic.component.ModalComponent;
 import br.net.uc.quantic.component.OnOffComponent;
 import br.net.uc.quantic.component.PositionComponent;
 import br.net.uc.quantic.component.SpriteBatchComponent;
 import br.net.uc.quantic.component.SpriteComponent;
+import br.net.uc.quantic.component.TimerComponent;
 import br.net.uc.quantic.utils.Values;
 
 public class RenderSystem extends EntitySystem {
@@ -23,6 +27,9 @@ public class RenderSystem extends EntitySystem {
     private ImmutableArray<Entity> cameras;
     private ImmutableArray<Entity> buttons;
     private ImmutableArray<Entity> messages;
+    private ImmutableArray<Entity> dialogs;
+    private ImmutableArray<Entity> gameStates;
+    private ImmutableArray<Entity> timerLabels;
 
     public RenderSystem() {}
 
@@ -41,7 +48,15 @@ public class RenderSystem extends EntitySystem {
         // Só temos a terra com camera, mas recupera tudo que tem componente camera aqui
         this.cameras = engine.getEntitiesFor(Family.all(CameraComponent.class).get());
 
+        // Botão de enviar
         this.buttons = engine.getEntitiesFor(Family.all(ButtonComponent.class, DimensionComponent.class, PositionComponent.class).get());
+
+        // Diálogo de vitória
+        this.dialogs = engine.getEntitiesFor(Family.one(ModalComponent.class).get());
+
+        this.gameStates = engine.getEntitiesFor(Family.one(GameStateComponent.class).get());
+
+        this.timerLabels = engine.getEntitiesFor(Family.all(TimerComponent.class, LabelComponent.class).get());
 
     }
 
@@ -119,10 +134,6 @@ public class RenderSystem extends EntitySystem {
 
                     messageSprite.value.draw(spriteBatchComponent.batch);
 
-                    Values.log("");
-
-                    //Values.logArray(messageSprite.value.getVertices());
-
                 }
 
                 for (Entity button : buttons) {
@@ -138,6 +149,49 @@ public class RenderSystem extends EntitySystem {
 
                     buttonComponent.stage.act();
                     buttonComponent.stage.draw();
+
+                }
+
+                for (Entity dialog : dialogs) {
+
+                    GameStateComponent modalState = Map.gameState.get(dialog);
+                    ModalComponent modalComponent = Map.modal.get(dialog);
+
+                    if (modalState.state == GameStateComponent.GameState.WIN
+                        && modalComponent.dialog.isVisible()) {
+
+                        Values.log("Is in win state and dialog is visible");
+
+                        // TODO: Se num usa tira :shrug:
+                        DimensionComponent dialogSize = Map.dimension.get(dialog);
+                        PositionComponent dialogPosition = Map.position.get(dialog);
+
+                        modalComponent.dialog.setOrigin(dialogPosition.x, dialogPosition.y);
+
+                        for (Entity gameState : gameStates) {
+
+                            GameStateComponent gameStateComponent = Map.gameState.get(gameState);
+                            gameStateComponent.state = GameStateComponent.GameState.PLAYING;
+
+                        }
+
+                    }
+
+                }
+
+                Entity timerLabel = timerLabels.first();
+
+                if (timerLabel != null) {
+
+                    LabelComponent labelComponent = Map.label.get(timerLabel);
+
+                    labelComponent.label.setSize(300, 50);
+                    labelComponent.label.setPosition(200, 100);
+
+                    labelComponent.label.draw(spriteBatchComponent.batch, Values.PARENT_ALPHA);
+
+                    labelComponent.stage.act();
+                    labelComponent.stage.draw();
 
                 }
 

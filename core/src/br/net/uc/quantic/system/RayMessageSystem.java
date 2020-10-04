@@ -79,8 +79,6 @@ public class RayMessageSystem extends EntitySystem implements Listener<Boolean> 
                             && cameraComponent.camera.frustum.pointInFrustum(new Vector3(topRight.x, topRight.y, 0))
                             && cameraComponent.camera.frustum.pointInFrustum(new Vector3(bottomRight.x, bottomRight.y, 0));
 
-            Values.log("onOff :: " + onOffMessage.isOn);
-
         }
 
     }

@@ -16,5 +16,8 @@ public class Map {
     public static final ComponentMapper<OnOffComponent> onOff = ComponentMapper.getFor(OnOffComponent.class);
     public static final ComponentMapper<GameStateComponent> gameState = ComponentMapper.getFor(GameStateComponent.class);
     public static final ComponentMapper<WinningComponent> winning = ComponentMapper.getFor(WinningComponent.class);
+    public static final ComponentMapper<ModalComponent> modal = ComponentMapper.getFor(ModalComponent.class);
+    public static final ComponentMapper<LabelComponent> label = ComponentMapper.getFor(LabelComponent.class);
+    public static final ComponentMapper<TimerComponent> timer = ComponentMapper.getFor(TimerComponent.class);
 
 }
