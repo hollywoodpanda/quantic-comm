@@ -9,6 +9,7 @@ import br.net.uc.quantic.component.PositionComponent;
 import br.net.uc.quantic.component.RotationComponent;
 import br.net.uc.quantic.component.SpriteComponent;
 import br.net.uc.quantic.component.VelocityComponent;
+import br.net.uc.quantic.component.WinningComponent;
 
 public class MarsEntity extends Entity {
 
@@ -29,6 +30,8 @@ public class MarsEntity extends Entity {
         // Marte tem que ser pequenininho para parecer estar longe
         add(new DimensionComponent(width, height));
         add(new RotationComponent((width) / 2, (height) / 2, 0.2f));
+        // TODO: Evoluir a forma como identificamos marte exclusivamente
+        add(new WinningComponent());
 
     }
 

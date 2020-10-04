@@ -14,5 +14,7 @@ public class Map {
     public static final ComponentMapper<DirectionComponent> direction = ComponentMapper.getFor(DirectionComponent.class);
     public static final ComponentMapper<ButtonComponent> button = ComponentMapper.getFor(ButtonComponent.class);
     public static final ComponentMapper<OnOffComponent> onOff = ComponentMapper.getFor(OnOffComponent.class);
+    public static final ComponentMapper<GameStateComponent> gameState = ComponentMapper.getFor(GameStateComponent.class);
+    public static final ComponentMapper<WinningComponent> winning = ComponentMapper.getFor(WinningComponent.class);
 
 }

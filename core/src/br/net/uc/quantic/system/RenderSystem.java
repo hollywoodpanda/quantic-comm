@@ -9,13 +9,11 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import br.net.uc.quantic.component.ButtonComponent;
 import br.net.uc.quantic.component.CameraComponent;
 import br.net.uc.quantic.component.DimensionComponent;
-import br.net.uc.quantic.component.DirectionComponent;
 import br.net.uc.quantic.component.Map;
 import br.net.uc.quantic.component.OnOffComponent;
 import br.net.uc.quantic.component.PositionComponent;
 import br.net.uc.quantic.component.SpriteBatchComponent;
 import br.net.uc.quantic.component.SpriteComponent;
-import br.net.uc.quantic.component.VelocityComponent;
 import br.net.uc.quantic.utils.Values;
 
 public class RenderSystem extends EntitySystem {
@@ -31,7 +29,7 @@ public class RenderSystem extends EntitySystem {
     @Override
     public void addedToEngine(Engine engine) {
 
-        // Carregamos tudo que precisamos para as sprites (posição, imagem e dimensão)
+        // Carregamos tudo que precisamos para as sprites (posição, imagem e dimensão) - Excluímos o OnOffComponent para não pegar a mensagem.
         this.sprites = engine.getEntitiesFor(Family.all(PositionComponent.class, SpriteComponent.class, DimensionComponent.class).exclude(OnOffComponent.class).get());
 
         // Carregamos a mensagem!
