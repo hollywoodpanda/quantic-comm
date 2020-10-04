@@ -6,13 +6,16 @@ import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 
+import br.net.uc.quantic.component.ButtonComponent;
 import br.net.uc.quantic.component.CameraComponent;
 import br.net.uc.quantic.component.DimensionComponent;
+import br.net.uc.quantic.component.DirectionComponent;
 import br.net.uc.quantic.component.Map;
+import br.net.uc.quantic.component.OnOffComponent;
 import br.net.uc.quantic.component.PositionComponent;
 import br.net.uc.quantic.component.SpriteBatchComponent;
 import br.net.uc.quantic.component.SpriteComponent;
-import br.net.uc.quantic.component.TextFieldComponent;
+import br.net.uc.quantic.component.VelocityComponent;
 import br.net.uc.quantic.utils.Values;
 
 public class RenderSystem extends EntitySystem {
@@ -20,7 +23,8 @@ public class RenderSystem extends EntitySystem {
     private ImmutableArray<Entity> sprites;
     private ImmutableArray<Entity> worlds;
     private ImmutableArray<Entity> cameras;
-    private ImmutableArray<Entity> textFields;
+    private ImmutableArray<Entity> buttons;
+    private ImmutableArray<Entity> messages;
 
     public RenderSystem() {}
 
@@ -28,7 +32,10 @@ public class RenderSystem extends EntitySystem {
     public void addedToEngine(Engine engine) {
 
         // Carregamos tudo que precisamos para as sprites (posição, imagem e dimensão)
-        this.sprites = engine.getEntitiesFor(Family.all(PositionComponent.class, SpriteComponent.class, DimensionComponent.class).get());
+        this.sprites = engine.getEntitiesFor(Family.all(PositionComponent.class, SpriteComponent.class, DimensionComponent.class).exclude(OnOffComponent.class).get());
+
+        // Carregamos a mensagem!
+        this.messages = engine.getEntitiesFor(Family.all(PositionComponent.class, SpriteComponent.class, DimensionComponent.class, OnOffComponent.class).get());
 
         // Carregamos o que precisamos para os mundos (algo onde desenhar - batch - e um tamanho para o "quadro")
         this.worlds = engine.getEntitiesFor(Family.all(SpriteBatchComponent.class, DimensionComponent.class).get());
@@ -36,8 +43,7 @@ public class RenderSystem extends EntitySystem {
         // Só temos a terra com camera, mas recupera tudo que tem componente camera aqui
         this.cameras = engine.getEntitiesFor(Family.all(CameraComponent.class).get());
 
-        // Os campos de texto (só tem o de enviar para marte)
-        this.textFields = engine.getEntitiesFor(Family.all(TextFieldComponent.class, PositionComponent.class, DimensionComponent.class).get());
+        this.buttons = engine.getEntitiesFor(Family.all(ButtonComponent.class, DimensionComponent.class, PositionComponent.class).get());
 
     }
 
@@ -101,16 +107,35 @@ public class RenderSystem extends EntitySystem {
 
                 }
 
-                // Para cada campo de texto...
-                for (Entity textFieldEntity : textFields) {
+                Entity messageEntity = messages.first();
 
-                    //Values.log("Entidade de textField: " + textFieldEntity);
+                PositionComponent messagePosition = Map.position.get(messageEntity);
+                DimensionComponent messageSize = Map.dimension.get(messageEntity);
+                SpriteComponent messageSprite = Map.sprite.get(messageEntity);
+                OnOffComponent messageIsOn = Map.onOff.get(messageEntity);
 
-                    PositionComponent textFieldPosComponent = Map.position.get(textFieldEntity);
-                    TextFieldComponent textFieldComponent = Map.textField.get(textFieldEntity);
+                if (messageIsOn.isOn) {
 
-                    textFieldComponent.textField.setPosition(textFieldPosComponent.x, textFieldPosComponent.y);
-                    textFieldComponent.textField.draw(spriteBatchComponent.batch, Values.PARENT_ALPHA);
+                    messageSprite.value.setSize(messageSize.width, messageSize.height);
+                    messageSprite.value.setPosition(messagePosition.x, messagePosition.y);
+
+                    messageSprite.value.draw(spriteBatchComponent.batch);
+
+                }
+
+                for (Entity button : buttons) {
+
+                    PositionComponent buttonPosition = Map.position.get(button);
+                    ButtonComponent buttonComponent = Map.button.get(button);
+                    DimensionComponent buttonDimension = Map.dimension.get(button);
+
+                    buttonComponent.button.setPosition(buttonPosition.x, buttonPosition.y);
+                    buttonComponent.button.setSize(buttonDimension.width, buttonDimension.height);
+
+                    buttonComponent.button.draw(spriteBatchComponent.batch, Values.PARENT_ALPHA);
+
+                    buttonComponent.stage.act();
+                    buttonComponent.stage.draw();
 
                 }
 

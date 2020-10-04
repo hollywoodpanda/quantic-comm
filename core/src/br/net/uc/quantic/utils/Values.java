@@ -10,6 +10,8 @@ public class Values {
 
     public static final float PARENT_ALPHA = 1;
 
+    public static final String BUTTON_TITLE = "Enviar";
+
     public static final void log (String text) {
 
         System.out.println(text);

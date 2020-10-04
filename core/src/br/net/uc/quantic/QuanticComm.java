@@ -1,42 +1,65 @@
 package br.net.uc.quantic;
 
 import com.badlogic.ashley.core.Engine;
+import com.badlogic.ashley.signals.Signal;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 
 import br.net.uc.quantic.entity.EarthEntity;
 import br.net.uc.quantic.entity.MarsEntity;
+import br.net.uc.quantic.entity.MessageEntity;
+import br.net.uc.quantic.entity.SendEntity;
+import br.net.uc.quantic.entity.SpaceBackgroundEntity;
 import br.net.uc.quantic.entity.WorldEntity;
-import br.net.uc.quantic.system.InputProcessingSystem;
-import br.net.uc.quantic.system.LabelProcessingSystem;
+import br.net.uc.quantic.system.RayMessageSystem;
 import br.net.uc.quantic.system.RenderSystem;
+import br.net.uc.quantic.system.RotationSystem;
 
 public class QuanticComm extends ApplicationAdapter {
+
+	Signal<Boolean> sendMessageSignal;
 
 	Engine engine;
 
 	EarthEntity earth;
 	MarsEntity mars;
 
+	SendEntity buttonSend;
+
+	MessageEntity message;
+
 	WorldEntity world;
+
+	SpaceBackgroundEntity spaceBackground;
 
 	RenderSystem renderSystem;
 
-	InputProcessingSystem inputProcessingSystem;
+	RotationSystem rotationSystem;
 
-	LabelProcessingSystem labelProcessingSystem;
+	RayMessageSystem rayMessageSystem;
 	
 	@Override
 	public void create () {
 
 		engine = new Engine();
 
-		earth = new EarthEntity();
-		engine.addEntity(earth);
+		sendMessageSignal = new Signal<>();
+
+		spaceBackground = new SpaceBackgroundEntity();
+		engine.addEntity(spaceBackground);
 
 		mars = new MarsEntity();
 		engine.addEntity(mars);
+
+		earth = new EarthEntity();
+		engine.addEntity(earth);
+
+		buttonSend = new SendEntity(sendMessageSignal);
+		engine.addEntity(buttonSend);
+
+		message = new MessageEntity();
+		engine.addEntity(message);
 
 		world = new WorldEntity();
 		engine.addEntity(world);
@@ -45,13 +68,13 @@ public class QuanticComm extends ApplicationAdapter {
 		engine.addSystem(renderSystem);
 		renderSystem.setProcessing(true);
 
-		inputProcessingSystem = new InputProcessingSystem();
-		engine.addSystem(inputProcessingSystem);
-		inputProcessingSystem.setProcessing(true);
+		rotationSystem = new RotationSystem();
+		engine.addSystem(rotationSystem);
+		rotationSystem.setProcessing(true);
 
-		labelProcessingSystem = new LabelProcessingSystem();
-		engine.addSystem(labelProcessingSystem);
-		labelProcessingSystem.setProcessing(true);
+		rayMessageSystem = new RayMessageSystem(sendMessageSignal);
+		engine.addSystem(rayMessageSystem);
+		rayMessageSystem.setProcessing(true);
 
 	}
 
