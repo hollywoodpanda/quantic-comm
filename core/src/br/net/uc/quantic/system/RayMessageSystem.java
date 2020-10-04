@@ -7,21 +7,15 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.signals.Listener;
 import com.badlogic.ashley.signals.Signal;
 import com.badlogic.ashley.utils.ImmutableArray;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.MathUtils;
 
 import br.net.uc.quantic.component.CameraComponent;
-import br.net.uc.quantic.component.DimensionComponent;
-import br.net.uc.quantic.component.DirectionComponent;
 import br.net.uc.quantic.component.Map;
 import br.net.uc.quantic.component.OnOffComponent;
 import br.net.uc.quantic.component.PositionComponent;
-import br.net.uc.quantic.component.RotationComponent;
 import br.net.uc.quantic.component.SpriteBatchComponent;
 import br.net.uc.quantic.component.SpriteComponent;
 import br.net.uc.quantic.component.VelocityComponent;
-import br.net.uc.quantic.utils.Values;
 
 
 public class RayMessageSystem extends EntitySystem implements Listener<Boolean> {
@@ -67,7 +61,7 @@ public class RayMessageSystem extends EntitySystem implements Listener<Boolean> 
             VelocityComponent messageVelocity = Map.velocity.get(messageEntity);
 
             Entity earthEntity = earth.first();
-            this.positionMessageOnTopOfEarthV2(earthEntity, messageEntity);
+            this.positionMessageOnTopOfEarth(earthEntity, messageEntity);
 
             messageOnOff.isOn = true;
 
@@ -75,17 +69,20 @@ public class RayMessageSystem extends EntitySystem implements Listener<Boolean> 
 
     }
 
-    private void positionMessageOnTopOfEarthV2 (Entity earth, Entity message) {
+    private void positionMessageOnTopOfEarth (Entity earth, Entity message) {
 
         SpriteComponent earthSprite = Map.sprite.get(earth);
 
         PositionComponent messagePosition = Map.position.get(message);
 
-        float x = earthSprite.value.getVertices()[SpriteBatch.X2];
-        float y = earthSprite.value.getVertices()[SpriteBatch.Y2];
+        float x2 = earthSprite.value.getVertices()[SpriteBatch.X2];
+        float y2 = earthSprite.value.getVertices()[SpriteBatch.Y2];
 
-        messagePosition.x = x;
-        messagePosition.y = y;
+        float x3 = earthSprite.value.getVertices()[SpriteBatch.X3];
+        float y3 = earthSprite.value.getVertices()[SpriteBatch.Y3];
+
+        messagePosition.x = (x3 + x2) / 2;
+        messagePosition.y = (y3 + y2) / 2;
 
     }
 
