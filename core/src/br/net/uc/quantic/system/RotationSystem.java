@@ -31,8 +31,7 @@ public class RotationSystem extends EntitySystem {
             SpriteComponent spriteComponent = Map.sprite.get(rotationEntity);
 
             spriteComponent.value.setOrigin(rotationComponent.x, rotationComponent.y);
-            // TODO: TIRAR O * 10!!!
-            spriteComponent.value.rotate(rotationComponent.degrees * 10);
+            spriteComponent.value.rotate(rotationComponent.degrees);
 
         }
 
