@@ -1,38 +1,71 @@
 package br.net.uc.quantic;
 
 import com.badlogic.ashley.core.Engine;
+import com.badlogic.ashley.signals.Signal;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import br.net.uc.quantic.entity.EarthEntity;
 import br.net.uc.quantic.entity.MarsEntity;
+import br.net.uc.quantic.entity.MessageEntity;
+import br.net.uc.quantic.entity.SendEntity;
+import br.net.uc.quantic.entity.SpaceBackgroundEntity;
 import br.net.uc.quantic.entity.WorldEntity;
+import br.net.uc.quantic.system.CollisionSystem;
+import br.net.uc.quantic.system.MovementSystem;
+import br.net.uc.quantic.system.RayMessageSystem;
 import br.net.uc.quantic.system.RenderSystem;
+import br.net.uc.quantic.system.RotationSystem;
 
 public class QuanticComm extends ApplicationAdapter {
+
+	Signal<Boolean> sendMessageSignal;
 
 	Engine engine;
 
 	EarthEntity earth;
 	MarsEntity mars;
 
+	SendEntity buttonSend;
+
+	MessageEntity message;
+
 	WorldEntity world;
 
+	SpaceBackgroundEntity spaceBackground;
+
 	RenderSystem renderSystem;
+
+	RotationSystem rotationSystem;
+
+	RayMessageSystem rayMessageSystem;
+
+	MovementSystem movementSystem;
+
+	CollisionSystem collisionSystem;
 	
 	@Override
 	public void create () {
 
 		engine = new Engine();
 
-		earth = new EarthEntity();
-		engine.addEntity(earth);
+		sendMessageSignal = new Signal<>();
+
+		spaceBackground = new SpaceBackgroundEntity();
+		engine.addEntity(spaceBackground);
 
 		mars = new MarsEntity();
 		engine.addEntity(mars);
+
+		earth = new EarthEntity();
+		engine.addEntity(earth);
+
+		buttonSend = new SendEntity(sendMessageSignal);
+		engine.addEntity(buttonSend);
+
+		message = new MessageEntity();
+		engine.addEntity(message);
 
 		world = new WorldEntity();
 		engine.addEntity(world);
@@ -41,6 +74,21 @@ public class QuanticComm extends ApplicationAdapter {
 		engine.addSystem(renderSystem);
 		renderSystem.setProcessing(true);
 
+		rotationSystem = new RotationSystem();
+		engine.addSystem(rotationSystem);
+		rotationSystem.setProcessing(true);
+
+		rayMessageSystem = new RayMessageSystem(sendMessageSignal);
+		engine.addSystem(rayMessageSystem);
+		rayMessageSystem.setProcessing(true);
+
+		movementSystem = new MovementSystem();
+		engine.addSystem(movementSystem);
+		movementSystem.setProcessing(true);
+
+		collisionSystem = new CollisionSystem();
+		engine.addSystem(collisionSystem);
+		collisionSystem.setProcessing(true);
 
 	}
 
